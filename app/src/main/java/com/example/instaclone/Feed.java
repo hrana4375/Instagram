@@ -89,7 +89,7 @@ public class Feed extends AppCompatActivity {
         recyclerView.setAdapter(feedAdapter);
 
         if(feedAdapter==null) {
-            Toast.makeText(Feed.this, "Add first Post", Toast.LENGTH_SHORT).show();
+            Toast.makeText(Feed.this, "Nothing to Show", Toast.LENGTH_SHORT).show();
         }
 
         authStateListener = new FirebaseAuth.AuthStateListener() {
@@ -231,6 +231,8 @@ public class Feed extends AppCompatActivity {
         detachDatabaseReadListener();
 
     }
+
 }
+
 
 

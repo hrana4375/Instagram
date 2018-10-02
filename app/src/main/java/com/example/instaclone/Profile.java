@@ -18,6 +18,12 @@ public class Profile extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        if(user!=null) {
+            username.setText(user.getDisplayName());
+        }
+
 
         username = findViewById((R.id.username));
         button = findViewById(R.id.button);
@@ -31,7 +37,6 @@ public class Profile extends AppCompatActivity {
             }
         });
 
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        username.setText(user.getDisplayName());
+
     }
 }
