@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -41,6 +42,8 @@ public class Feed extends AppCompatActivity {
     FeedAdapter feedAdapter;
     ImageView postItem,postCamera,profile;
 
+    public static final String ANONYMOUS = "anonymous";
+
     private static final int SIGN_IN = 1;
     private static final int PICK_PHOTO = 2;
     String username;
@@ -66,6 +69,8 @@ public class Feed extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feed);
 
+        username = ANONYMOUS;
+
         postItem = findViewById(R.id.postItem);
         profile = findViewById(R.id.profile);
 
@@ -78,40 +83,14 @@ public class Feed extends AppCompatActivity {
         databaseReference = firebaseDatabase.getReference().child("posts");
         storageReference =  firebaseStorage.getReference().child("posts_storage");
 
-        databaseReference.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-                Post post = dataSnapshot.getValue(Post.class);
-                postArrayList.add(post);
-                feedAdapter.swap(postArrayList);
-            }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
         List<Post> posts = new ArrayList<>();
         feedAdapter  = new FeedAdapter(this);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(feedAdapter);
+
+        if(feedAdapter==null) {
+            Toast.makeText(Feed.this, "Add first Post", Toast.LENGTH_SHORT).show();
+        }
 
         authStateListener = new FirebaseAuth.AuthStateListener() {
 
@@ -120,10 +99,18 @@ public class Feed extends AppCompatActivity {
                     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
                     if(user!=null) {
-                        Toast.makeText(Feed.this, "abcd", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(Feed.this, "abcd", Toast.LENGTH_SHORT).show();
+                        onSignedInInitialize(user.getDisplayName());
+
                     }
                     else {
-                      startSignIn();
+                        onSignedOutCleanup();
+                        startActivityForResult(
+                                AuthUI.getInstance()
+                                        .createSignInIntentBuilder()
+                                        .setAvailableProviders(list)
+                                        .build(),
+                                        SIGN_IN);
                     }
             }
         };
@@ -145,16 +132,6 @@ public class Feed extends AppCompatActivity {
             startActivity(intent);
         }
     });
-
-    }
-
-    private void startSignIn() {
-          startActivityForResult(
-              AuthUI.getInstance()
-                        .createSignInIntentBuilder()
-                        .setAvailableProviders(list)
-                        .build(),
-                 SIGN_IN);
 
     }
 
@@ -193,7 +170,67 @@ public class Feed extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onResume() {
+        firebaseAuth.addAuthStateListener(authStateListener);
+        super.onResume();
+    }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if(authStateListener!=null) {
+            firebaseAuth.removeAuthStateListener(authStateListener);
+        }
+        feedAdapter.postsList = new ArrayList<>();
+        feedAdapter.notifyDataSetChanged();
+
+        detachDatabaseReadListener();
+    }
+
+    private void detachDatabaseReadListener() {
+        if(childEventListener!=null) {
+            databaseReference.removeEventListener(childEventListener);
+            childEventListener = null;
+        }
+    }
+
+    private void onSignedInInitialize(String username) {
+        this.username = username;
+        attachDatabaseReadListener();
+    }
+
+    private void attachDatabaseReadListener() {
+        if (childEventListener == null) {
+            childEventListener = new ChildEventListener() {
+                @Override
+                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                    Post post = dataSnapshot.getValue(Post.class);
+                    feedAdapter.postsList.add(post);
+                    feedAdapter.notifyDataSetChanged();
+                }
+
+                public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
+                public void onChildRemoved(DataSnapshot dataSnapshot) {}
+                public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
+                public void onCancelled(DatabaseError databaseError) {}
+            };
+
+
+            databaseReference.addChildEventListener(childEventListener);
+        }
+    }
+
+    private void onSignedOutCleanup() {
+
+        username = ANONYMOUS;
+
+        feedAdapter.postsList = new ArrayList<>();
+        feedAdapter.notifyDataSetChanged();
+
+        detachDatabaseReadListener();
+
+    }
 }
 
 

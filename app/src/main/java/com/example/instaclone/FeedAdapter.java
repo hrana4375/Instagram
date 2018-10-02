@@ -35,15 +35,10 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.NumberViewHold
 
     @Override
     public int getItemCount() {
+
         return 0;
     }
 
-    void swap(ArrayList<Post> postsList) {
-        this.postsList = postsList;
-
-        notifyDataSetChanged();
-
-    }
 
     public class NumberViewHolder extends RecyclerView.ViewHolder {
 
