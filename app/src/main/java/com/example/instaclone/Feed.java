@@ -66,6 +66,9 @@ public class Feed extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feed);
 
+        postItem = findViewById(R.id.postItem);
+        profile = findViewById(R.id.profile);
+
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();
         firebaseStorage = FirebaseStorage.getInstance();
@@ -117,7 +120,7 @@ public class Feed extends AppCompatActivity {
                     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
                     if(user!=null) {
-
+                        Toast.makeText(Feed.this, "abcd", Toast.LENGTH_SHORT).show();
                     }
                     else {
                       startSignIn();
@@ -146,12 +149,13 @@ public class Feed extends AppCompatActivity {
     }
 
     private void startSignIn() {
-        startActivityForResult(
-                AuthUI.getInstance()
+          startActivityForResult(
+              AuthUI.getInstance()
                         .createSignInIntentBuilder()
                         .setAvailableProviders(list)
                         .build(),
-                SIGN_IN);
+                 SIGN_IN);
+
     }
 
     @Override
