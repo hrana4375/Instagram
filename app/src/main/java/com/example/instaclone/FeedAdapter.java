@@ -37,12 +37,12 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.NumberViewHold
     public int getItemCount() {
 
         return 0;
+
     }
 
 
     public class NumberViewHolder extends RecyclerView.ViewHolder {
-
-
+        
         public NumberViewHolder(View itemView) {
             super(itemView);
         }

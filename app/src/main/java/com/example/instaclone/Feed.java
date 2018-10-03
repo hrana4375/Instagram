@@ -77,6 +77,8 @@ public class Feed extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();
         firebaseStorage = FirebaseStorage.getInstance();
+
+
         firebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
         recyclerView = findViewById(R.id.recycler_view);
 
@@ -88,9 +90,6 @@ public class Feed extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(feedAdapter);
 
-        if(feedAdapter==null) {
-            Toast.makeText(Feed.this, "Nothing to Show", Toast.LENGTH_SHORT).show();
-        }
 
         authStateListener = new FirebaseAuth.AuthStateListener() {
 
@@ -162,6 +161,7 @@ public class Feed extends AppCompatActivity {
                                 Task<Uri> urlTask = taskSnapshot.getStorage().getDownloadUrl();
                                 while(!urlTask.isSuccessful()) ;
                                     Uri downloadurl = urlTask.getResult();
+
                                     Post post = new Post(username,downloadurl.toString());
                                     databaseReference.push().setValue(post);
                             }
@@ -202,7 +202,9 @@ public class Feed extends AppCompatActivity {
 
     private void attachDatabaseReadListener() {
         if (childEventListener == null) {
+
             childEventListener = new ChildEventListener() {
+
                 @Override
                 public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                     Post post = dataSnapshot.getValue(Post.class);
