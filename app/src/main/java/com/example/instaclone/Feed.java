@@ -98,10 +98,8 @@ public class Feed extends AppCompatActivity {
                     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
                     if(user!=null) {
-                        //Toast.makeText(Feed.this, "abcd", Toast.LENGTH_SHORT).show();
                         onSignedInInitialize(user.getDisplayName());
-
-                    }
+            }
                     else {
                         onSignedOutCleanup();
                         startActivityForResult(
@@ -208,8 +206,9 @@ public class Feed extends AppCompatActivity {
                 @Override
                 public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                     Post post = dataSnapshot.getValue(Post.class);
-                    feedAdapter.postsList.add(post);
-                    feedAdapter.notifyDataSetChanged();
+
+//                    feedAdapter.postsList.add(post);
+//                    feedAdapter.notifyDataSetChanged();
                 }
 
                 public void onChildChanged(DataSnapshot dataSnapshot, String s) {}

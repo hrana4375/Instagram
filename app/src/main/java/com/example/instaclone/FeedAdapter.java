@@ -30,7 +30,6 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.NumberViewHold
     @Override
     public void onBindViewHolder(@NonNull NumberViewHolder holder, int position) {
         Post post = postsList.get(position);
-
     }
 
     @Override
