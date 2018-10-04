@@ -10,16 +10,23 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.NumberViewHolder>{
 
     public List<Post> postsList;
+    public  Context context;
 
-    public FeedAdapter(List<Post> postsList) {
+
+    public FeedAdapter(List<Post> postsList,Context context) {
         this.postsList = postsList;
+        this.context = context;
     }
+
+
     @NonNull
     @Override
     public NumberViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -31,8 +38,11 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.NumberViewHold
     @Override
     public void onBindViewHolder(@NonNull NumberViewHolder holder, int position) {
 
+        Post postmodel = postsList.get(position);
+
         holder.author.setText(postsList.get(position).getAuthor());
-        holder.postImg.setImageURI(Uri.parse(postsList.get(position).getPhotoUrl()));
+
+        Glide.with(context).load(postmodel.getPhotoUrl()).into(holder.postImg);
 
     }
 

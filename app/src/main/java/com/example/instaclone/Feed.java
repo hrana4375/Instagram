@@ -13,6 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
@@ -34,6 +35,7 @@ import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class Feed extends AppCompatActivity {
@@ -56,8 +58,6 @@ public class Feed extends AppCompatActivity {
     private StorageReference storageReference;
     private FirebaseRemoteConfig firebaseRemoteConfig;
     private ChildEventListener childEventListener;
-
-    ArrayList<Post> postArrayList;
 
     //creating signUP methods list
     List<AuthUI.IdpConfig> list = Arrays.asList(
@@ -90,7 +90,13 @@ public class Feed extends AppCompatActivity {
 
         //for Recycler view
         List<Post> posts = new ArrayList<>();
-        feedAdapter  = new FeedAdapter(posts);
+        //Collections.reverse(posts);
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+
+        linearLayoutManager.setReverseLayout(true);
+        linearLayoutManager.setStackFromEnd(true);
+        feedAdapter  = new FeedAdapter(posts,this);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(feedAdapter);
 
@@ -213,10 +219,12 @@ public class Feed extends AppCompatActivity {
 
                 @Override
                 public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+
                     Post post = dataSnapshot.getValue(Post.class);
 
-                   feedAdapter.postsList.add(post);
-                   feedAdapter.notifyDataSetChanged();
+                    feedAdapter.postsList.add(post);
+                    feedAdapter.notifyDataSetChanged();
+
                 }
 
                 public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
