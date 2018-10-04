@@ -86,7 +86,7 @@ public class Feed extends AppCompatActivity {
         storageReference =  firebaseStorage.getReference().child("posts_storage");
 
         List<Post> posts = new ArrayList<>();
-        feedAdapter  = new FeedAdapter(this);
+        feedAdapter  = new FeedAdapter(posts);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(feedAdapter);
 
@@ -207,8 +207,8 @@ public class Feed extends AppCompatActivity {
                 public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                     Post post = dataSnapshot.getValue(Post.class);
 
-//                    feedAdapter.postsList.add(post);
-//                    feedAdapter.notifyDataSetChanged();
+                   feedAdapter.postsList.add(post);
+                   feedAdapter.notifyDataSetChanged();
                 }
 
                 public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
