@@ -15,7 +15,6 @@ import com.google.firebase.auth.FirebaseUser;
 public class Profile extends AppCompatActivity {
 
     Post posts;
-  //  TextView username;
     Button button;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +33,8 @@ public class Profile extends AppCompatActivity {
                 startActivity(intent);
 
                 Toast.makeText(Profile.this, "Signed Out", Toast.LENGTH_SHORT).show();
+                finish();
+
 
             }
         });

@@ -1,6 +1,7 @@
 package com.example.instaclone;
 
 import android.content.Context;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -31,7 +32,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.NumberViewHold
     public void onBindViewHolder(@NonNull NumberViewHolder holder, int position) {
 
         holder.author.setText(postsList.get(position).getAuthor());
-        holder.postImg.setVisibility(View.GONE);
+        holder.postImg.setImageURI(Uri.parse(postsList.get(position).getPhotoUrl()));
 
     }
 

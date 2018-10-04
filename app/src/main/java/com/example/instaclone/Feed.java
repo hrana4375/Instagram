@@ -59,6 +59,7 @@ public class Feed extends AppCompatActivity {
 
     ArrayList<Post> postArrayList;
 
+    //creating signUP methods list
     List<AuthUI.IdpConfig> list = Arrays.asList(
             new AuthUI.IdpConfig.GoogleBuilder().build(),
             new AuthUI.IdpConfig.EmailBuilder().build()
@@ -74,6 +75,7 @@ public class Feed extends AppCompatActivity {
         postItem = findViewById(R.id.postItem);
         profile = findViewById(R.id.profile);
 
+        //getting Instances
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();
         firebaseStorage = FirebaseStorage.getInstance();
@@ -82,15 +84,17 @@ public class Feed extends AppCompatActivity {
         firebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
         recyclerView = findViewById(R.id.recycler_view);
 
+        //getting database and storage references
         databaseReference = firebaseDatabase.getReference().child("posts");
         storageReference =  firebaseStorage.getReference().child("posts_storage");
 
+        //for Recycler view
         List<Post> posts = new ArrayList<>();
         feedAdapter  = new FeedAdapter(posts);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(feedAdapter);
 
-
+        //getting the current state of the user
         authStateListener = new FirebaseAuth.AuthStateListener() {
 
             @Override
@@ -112,6 +116,8 @@ public class Feed extends AppCompatActivity {
             }
         };
 
+
+        //for uploading image
         postItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -122,16 +128,18 @@ public class Feed extends AppCompatActivity {
                 startActivityForResult(Intent.createChooser(intent,"PICK IMAGE"),PICK_PHOTO);
             }
         });
-    profile.setOnClickListener(new View.OnClickListener() {
+
+        profile.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            Intent intent = new Intent(Feed.this,Profile.class);
-            startActivity(intent);
-        }
-    });
+                Intent intent = new Intent(Feed.this,Profile.class);
+                 startActivity(intent);
+                }
+         });
 
     }
 
+    //handling the actions
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
@@ -228,6 +236,7 @@ public class Feed extends AppCompatActivity {
 
         feedAdapter.postsList = new ArrayList<>();
         feedAdapter.notifyDataSetChanged();
+
 
         detachDatabaseReadListener();
 
