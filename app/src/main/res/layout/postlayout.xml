@@ -40,21 +40,21 @@
             <ImageView
                 android:layout_width="50dp"
                 android:layout_height="30dp"
-                android:layout_marginLeft="9dp"
+                android:layout_marginLeft="5dp"
                 android:paddingTop="5sp"
                 android:src="@drawable/ic_favorite_black_24dp" />
 
             <ImageView
                 android:layout_width="50dp"
                 android:layout_height="30dp"
-                android:layout_marginLeft="20sp"
+                android:layout_marginLeft="5sp"
                 android:paddingTop="-5sp"
                 android:src="@drawable/ic_insert_comment_black_24dp" />
 
             <ImageView
                 android:layout_width="50dp"
                 android:layout_height="30dp"
-                android:layout_marginLeft="20sp"
+                android:layout_marginLeft="5sp"
                 android:onClick="post"
                 android:paddingTop="5sp"
                 android:src="@drawable/ic_near_me_black_24dp" />
@@ -63,7 +63,7 @@
             <ImageView
                 android:layout_width="50dp"
                 android:layout_height="30dp"
-                android:layout_marginLeft="90sp"
+                android:layout_marginLeft="140sp"
                 android:src="@drawable/ic_turned_in_not_black_24dp" />
 
         </LinearLayout>

@@ -18,7 +18,7 @@
         android:layout_marginTop="88dp"
         android:text="Instagram"
         android:textColor="@android:color/background_light"
-        android:textSize="80sp"
+        android:textSize="60sp"
         android:textStyle="normal|bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

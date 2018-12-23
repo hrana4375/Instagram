@@ -97,7 +97,7 @@ public class Feed extends AppCompatActivity {
         linearLayoutManager.setReverseLayout(true);
         linearLayoutManager.setStackFromEnd(true);
         feedAdapter  = new FeedAdapter(posts,this);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(feedAdapter);
 
         //getting the current state of the user
